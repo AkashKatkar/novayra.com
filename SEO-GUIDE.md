@@ -48,7 +48,7 @@
 ## 📄 **Page-Specific SEO**
 
 ### **Homepage**
-- **Meta Title**: "Novayra Perfume – Luxury Fragrance with a Fresh, Radiant Aura | Shop Now"
+- **Meta Title**: "Novayra Perfume - Luxury Fragrance with a Fresh, Radiant Aura | Shop Now"
 - **Meta Description**: "Discover Novayra, the modern luxury perfume brand symbolizing a new aura of elegance. Shop our radiant fragrance collection with unique scents for special occasions."
 - **H1**: "Novayra Perfume - A New Aura of Luxury"
 - **H2**: "Our Signature Fragrance Collection"
@@ -67,7 +67,7 @@
 
 ### **1. Meta Tags (Already Implemented)**
 ```html
-<title>Novayra Perfume – Luxury Fragrance with a Fresh, Radiant Aura | Shop Now</title>
+<title>Novayra Perfume - Luxury Fragrance with a Fresh, Radiant Aura | Shop Now</title>
 <meta name="description" content="Discover Novayra, the modern luxury perfume brand symbolizing a new aura of elegance. Shop our radiant fragrance collection with unique scents for special occasions.">
 <meta name="keywords" content="Novayra perfume, luxury fragrance, modern scent, radiant essence, luxury perfume brand, unique fragrances, premium perfumes">
 ```
