@@ -107,89 +107,11 @@
                 <h2 class="section-title">Our Signature Fragrance Collection</h2>
                 <p class="section-subtitle">Each Novayra luxury fragrance is crafted with the finest ingredients, creating an olfactory journey that captivates the senses with radiant essence and modern sophistication.</p>
             </div>
-            <div class="fragrance-grid">
-                <div class="fragrance-card fade-in-on-scroll" data-fragrance="midnight-velvet">
-                    <div class="card-image">
-                        <img src="images/midnight-velvet.svg" alt="Novayra Midnight Velvet luxury perfume bottle with amber and gold design" class="perfume-bottle-img" loading="lazy">
-                        <div class="image-overlay">
-                            <div class="fragrance-details">
-                                <h3>Midnight Velvet</h3>
-                                <p>Deep amber, vanilla, and sandalwood</p>
-                                <span class="price">₹4,800</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h3>Midnight Velvet - Luxury Perfume</h3>
-                        <p>Introducing Novayra Midnight Velvet—a modern luxury fragrance inspired by the mystique of midnight. With top notes of bergamot and black pepper, heart notes of jasmine and amber, and base notes of vanilla and sandalwood, this perfume embodies elegance and sophistication. Perfect for special occasions, this radiant fragrance creates a lasting impression with its unique scent profile.</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary add-to-cart-btn" data-product-id="1">Add to Cart</button>
-                            <button class="btn btn-outline request-sample-btn" data-product-id="1">Request Sample</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragrance-card fade-in-on-scroll" data-fragrance="emerald-dreams">
-                    <div class="card-image">
-                        <img src="images/emerald-dreams.svg" alt="Novayra Emerald Dreams modern fragrance bottle with emerald green and gold accents" class="perfume-bottle-img" loading="lazy">
-                        <div class="image-overlay">
-                            <div class="fragrance-details">
-                                <h3>Emerald Dreams</h3>
-                                <p>Green tea, jasmine, and bergamot</p>
-                                <span class="price">₹4,200</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h3>Emerald Dreams - Modern Fragrance</h3>
-                        <p>Discover Novayra Emerald Dreams—a fresh and ethereal luxury perfume that transports you to a serene garden. With top notes of green tea and bergamot, heart notes of jasmine and lily of the valley, and base notes of white musk and cedar, this modern scent embodies tranquility and grace. This radiant essence perfume is perfect for daily wear and special moments, offering a unique fragrance experience.</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary add-to-cart-btn" data-product-id="2">Add to Cart</button>
-                            <button class="btn btn-outline request-sample-btn" data-product-id="2">Request Sample</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragrance-card fade-in-on-scroll" data-fragrance="rose-gold">
-                    <div class="card-image">
-                        <img src="images/rose-gold.svg" alt="Novayra Rose Gold premium perfume bottle with rose gold and gold design" class="perfume-bottle-img" loading="lazy">
-                        <div class="image-overlay">
-                            <div class="fragrance-details">
-                                <h3>Rose Gold</h3>
-                                <p>Damask rose, oud, and vanilla</p>
-                                <span class="price">₹4,900</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h3>Rose Gold - Premium Perfume</h3>
-                        <p>Experience Novayra Rose Gold—a luxurious premium perfume that embodies pure opulence. With top notes of damask rose and pink pepper, heart notes of oud and jasmine, and base notes of vanilla and sandalwood, this luxury fragrance creates an unforgettable impression. Perfect for special occasions and evening wear, this unique scent offers a radiant essence that lingers throughout the night.</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary add-to-cart-btn" data-product-id="3">Add to Cart</button>
-                            <button class="btn btn-outline request-sample-btn" data-product-id="3">Request Sample</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fragrance-card fade-in-on-scroll" data-fragrance="sapphire-mist">
-                    <div class="card-image">
-                        <img src="images/sapphire-mist.svg" alt="Novayra Sapphire Mist unique fragrance bottle with sapphire blue and gold design" class="perfume-bottle-img" loading="lazy">
-                        <div class="image-overlay">
-                            <div class="fragrance-details">
-                                <h3>Sapphire Mist</h3>
-                                <p>Ocean breeze, white musk, and citrus</p>
-                                <span class="price">₹4,500</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h3>Sapphire Mist - Unique Fragrance</h3>
-                        <p>Discover Novayra Sapphire Mist—a unique fragrance that captures the essence of a coastal morning. With top notes of ocean breeze and citrus, heart notes of white musk and sea salt, and base notes of driftwood and amber, this modern perfume offers a fresh, radiant essence. This luxury fragrance is perfect for those seeking a distinctive scent that evokes tranquility and sophistication.</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary add-to-cart-btn" data-product-id="4">Add to Cart</button>
-                            <button class="btn btn-outline request-sample-btn" data-product-id="4">Request Sample</button>
-                        </div>
-                    </div>
+            <div class="fragrance-grid" id="fragrance-grid">
+                <!-- Products will be loaded dynamically from database -->
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading our luxury fragrance collection...</p>
                 </div>
             </div>
         </div>

@@ -20,7 +20,7 @@ const checkoutModal = document.getElementById('checkout-modal');
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
     setupEventListeners();
-    loadProducts();
+    loadProductsFromDatabase();
     checkAuthStatus();
     setupCustomDropdowns();
 });
@@ -750,13 +750,85 @@ function closeCartModal() {
 }
 
 // Product Functions
-async function loadProducts() {
+async function loadProductsFromDatabase() {
     try {
         const response = await apiRequest('/products');
-        products = response.data.products;
+        
+        if (response && response.success) {
+            products = response.data.products;
+            displayProducts(products);
+        } else {
+            console.error('Failed to load products:', response?.message);
+            showNotification('Failed to load products', 'error');
+        }
     } catch (error) {
-        console.error('Failed to load products:', error);
+        console.error('Error loading products:', error);
+        showNotification('Error loading products', 'error');
     }
+}
+
+function displayProducts(products) {
+    const fragranceGrid = document.getElementById('fragrance-grid');
+    
+    if (!fragranceGrid) {
+        console.error('Fragrance grid element not found');
+        return;
+    }
+    
+    if (!products || products.length === 0) {
+        fragranceGrid.innerHTML = `
+            <div class="no-products">
+                <i class="fas fa-box-open"></i>
+                <h3>No Products Available</h3>
+                <p>Our luxury fragrance collection is currently being updated.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const productsHTML = products.map((product, index) => {
+        // Extract fragrance notes for overlay
+        const fragranceNotes = product.fragrance_notes || 'Luxury fragrance notes';
+        const shortNotes = fragranceNotes.split('|')[0] || fragranceNotes;
+        
+        // Create fragrance identifier from name
+        const fragranceId = product.name.toLowerCase().replace(/\s+/g, '-');
+        
+        return `
+            <div class="fragrance-card fade-in-on-scroll" data-fragrance="${fragranceId}" style="animation-delay: ${index * 0.1}s;">
+                <div class="card-image">
+                    <img src="${product.image_url}" alt="Novayra ${product.name} luxury perfume bottle" class="perfume-bottle-img" loading="lazy">
+                    <div class="image-overlay">
+                        <div class="fragrance-details">
+                            <h3>${product.name}</h3>
+                            <p>${shortNotes}</p>
+                            <span class="price">₹${product.price.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>${product.name} - ${product.category || 'Luxury Perfume'}</h3>
+                    <p>${product.description}</p>
+                    <div class="product-actions">
+                        <button class="btn btn-primary add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+                        <button class="btn btn-outline request-sample-btn" data-product-id="${product.id}">Request Sample</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    fragranceGrid.innerHTML = productsHTML;
+    
+    // Force all product cards to be visible (fix fade-in-on-scroll)
+    setTimeout(() => {
+        document.querySelectorAll('.fragrance-card.fade-in-on-scroll').forEach(card => {
+            card.classList.add('visible');
+        });
+    }, 10);
+    
+    // Re-attach event listeners for the new product buttons
+    setupProductEvents();
 }
 
 // Sample Request Functions
