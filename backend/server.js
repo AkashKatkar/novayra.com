@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const { testConnection, initializeDatabase } = require('./config/database');
@@ -16,6 +17,11 @@ const sampleRoutes = require('./routes/samples');
 const contactRoutes = require('./routes/contact');
 const profileRoutes = require('./routes/profile');
 
+// Import admin routes
+const adminRoutes = require('./routes/admin');
+const adminOrderRoutes = require('./routes/adminOrders');
+const adminProductRoutes = require('./routes/adminProducts');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -27,6 +33,7 @@ app.use(helmet({
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
             scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+            scriptSrcAttr: ["'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:"],
             connectSrc: ["'self'"]
         }
@@ -55,6 +62,7 @@ app.use(cors({
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
 
 // Serve static files from root directory (main folder)
 app.use(express.static(path.join(__dirname, '..')));
@@ -83,6 +91,11 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/samples', sampleRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/profile', profileRoutes);
+
+// Admin API routes
+app.use('/api/admin', adminRoutes);
+app.use('/api/admin/orders', adminOrderRoutes);
+app.use('/api/admin/products', adminProductRoutes);
 
 // Serve index.html for all non-API routes (SPA support)
 app.get('*', (req, res) => {
