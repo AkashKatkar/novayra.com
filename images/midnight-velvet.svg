@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" width="200" height="300">
+  <defs>
+    <linearGradient id="midnightGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c1810;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4a2c1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0f08;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f4d03f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.4" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.05" />
+    </linearGradient>
+    
+    <radialGradient id="bottleGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#d4af37;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Bottle glow effect -->
+  <ellipse cx="100" cy="200" rx="80" ry="120" fill="url(#bottleGlow)" opacity="0.6"/>
+  
+  <!-- Bottle body -->
+  <rect x="40" y="120" width="120" height="200" rx="60" ry="60" fill="url(#midnightGradient)" stroke="url(#goldGradient)" stroke-width="3"/>
+  
+  <!-- Bottle neck -->
+  <rect x="70" y="100" width="60" height="30" rx="30" ry="30" fill="url(#midnightGradient)" stroke="url(#goldGradient)" stroke-width="3"/>
+  
+  <!-- Bottle cap -->
+  <rect x="60" y="70" width="80" height="35" rx="40" ry="40" fill="url(#goldGradient)"/>
+  <rect x="70" y="80" width="60" height="15" rx="30" ry="30" fill="url(#midnightGradient)" opacity="0.3"/>
+  
+  <!-- Glass highlights -->
+  <ellipse cx="100" cy="220" rx="25" ry="60" fill="url(#glassGradient)" opacity="0.7"/>
+  <ellipse cx="100" cy="180" rx="15" ry="40" fill="url(#glassGradient)" opacity="0.5"/>
+  
+  <!-- Gold label -->
+  <rect x="50" y="160" width="100" height="40" rx="8" ry="8" fill="url(#goldGradient)" opacity="0.95"/>
+  <text x="100" y="180" text-anchor="middle" font-family="serif" font-size="12" fill="#2c1810" font-weight="bold">MIDNIGHT</text>
+  <text x="100" y="195" text-anchor="middle" font-family="serif" font-size="10" fill="#2c1810">VELVET</text>
+  
+  <!-- Decorative elements -->
+  <circle cx="30" cy="150" r="2" fill="url(#goldGradient)" opacity="0.6"/>
+  <circle cx="170" cy="180" r="1.5" fill="url(#goldGradient)" opacity="0.6"/>
+  <circle cx="40" cy="280" r="1" fill="url(#goldGradient)" opacity="0.6"/>
+</svg> 

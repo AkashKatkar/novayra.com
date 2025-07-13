@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://novayra.com/sitemap.xml
+
+# Disallow admin areas (if any)
+Disallow: /admin/
+Disallow: /private/
+
+# Allow all images
+Allow: /images/
+
+# Allow all CSS and JS files
+Allow: /*.css
+Allow: /*.js 

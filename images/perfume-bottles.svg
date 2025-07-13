@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <!-- Gradients for bottles -->
+    <linearGradient id="midnightGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c1810;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4a2c1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0f08;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="emeraldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a5f4a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d7a5f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f3d2e;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="roseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#b76e79;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d4a5ae;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b4d57;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="sapphireGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3b5ba9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f1f4a;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gold accents -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f4d03f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glass effect -->
+    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.05" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Midnight Velvet Bottle -->
+  <g id="midnight-velvet" transform="translate(50, 100)">
+    <!-- Bottle body -->
+    <rect x="20" y="80" width="60" height="200" rx="30" ry="30" fill="url(#midnightGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle neck -->
+    <rect x="35" y="60" width="30" height="30" rx="15" ry="15" fill="url(#midnightGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle cap -->
+    <rect x="30" y="40" width="40" height="25" rx="20" ry="20" fill="url(#goldGradient)"/>
+    <!-- Glass highlight -->
+    <ellipse cx="50" cy="180" rx="15" ry="40" fill="url(#glassGradient)" opacity="0.6"/>
+    <!-- Label -->
+    <rect x="25" y="120" width="50" height="30" rx="5" ry="5" fill="url(#goldGradient)" opacity="0.9"/>
+    <text x="50" y="140" text-anchor="middle" font-family="serif" font-size="8" fill="#2c1810" font-weight="bold">MIDNIGHT</text>
+    <text x="50" y="150" text-anchor="middle" font-family="serif" font-size="6" fill="#2c1810">VELVET</text>
+  </g>
+  
+  <!-- Emerald Dreams Bottle -->
+  <g id="emerald-dreams" transform="translate(200, 100)">
+    <!-- Bottle body -->
+    <rect x="20" y="80" width="60" height="200" rx="30" ry="30" fill="url(#emeraldGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle neck -->
+    <rect x="35" y="60" width="30" height="30" rx="15" ry="15" fill="url(#emeraldGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle cap -->
+    <rect x="30" y="40" width="40" height="25" rx="20" ry="20" fill="url(#goldGradient)"/>
+    <!-- Glass highlight -->
+    <ellipse cx="50" cy="180" rx="15" ry="40" fill="url(#glassGradient)" opacity="0.6"/>
+    <!-- Label -->
+    <rect x="25" y="120" width="50" height="30" rx="5" ry="5" fill="url(#goldGradient)" opacity="0.9"/>
+    <text x="50" y="140" text-anchor="middle" font-family="serif" font-size="8" fill="#1a5f4a" font-weight="bold">EMERALD</text>
+    <text x="50" y="150" text-anchor="middle" font-family="serif" font-size="6" fill="#1a5f4a">DREAMS</text>
+  </g>
+  
+  <!-- Rose Gold Bottle -->
+  <g id="rose-gold" transform="translate(350, 100)">
+    <!-- Bottle body -->
+    <rect x="20" y="80" width="60" height="200" rx="30" ry="30" fill="url(#roseGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle neck -->
+    <rect x="35" y="60" width="30" height="30" rx="15" ry="15" fill="url(#roseGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle cap -->
+    <rect x="30" y="40" width="40" height="25" rx="20" ry="20" fill="url(#goldGradient)"/>
+    <!-- Glass highlight -->
+    <ellipse cx="50" cy="180" rx="15" ry="40" fill="url(#glassGradient)" opacity="0.6"/>
+    <!-- Label -->
+    <rect x="25" y="120" width="50" height="30" rx="5" ry="5" fill="url(#goldGradient)" opacity="0.9"/>
+    <text x="50" y="140" text-anchor="middle" font-family="serif" font-size="8" fill="#b76e79" font-weight="bold">ROSE</text>
+    <text x="50" y="150" text-anchor="middle" font-family="serif" font-size="6" fill="#b76e79">GOLD</text>
+  </g>
+  
+  <!-- Sapphire Mist Bottle -->
+  <g id="sapphire-mist" transform="translate(500, 100)">
+    <!-- Bottle body -->
+    <rect x="20" y="80" width="60" height="200" rx="30" ry="30" fill="url(#sapphireGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle neck -->
+    <rect x="35" y="60" width="30" height="30" rx="15" ry="15" fill="url(#sapphireGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+    <!-- Bottle cap -->
+    <rect x="30" y="40" width="40" height="25" rx="20" ry="20" fill="url(#goldGradient)"/>
+    <!-- Glass highlight -->
+    <ellipse cx="50" cy="180" rx="15" ry="40" fill="url(#glassGradient)" opacity="0.6"/>
+    <!-- Label -->
+    <rect x="25" y="120" width="50" height="30" rx="5" ry="5" fill="url(#goldGradient)" opacity="0.9"/>
+    <text x="50" y="140" text-anchor="middle" font-family="serif" font-size="8" fill="#1e3a8a" font-weight="bold">SAPPHIRE</text>
+    <text x="50" y="150" text-anchor="middle" font-family="serif" font-size="6" fill="#1e3a8a">MIST</text>
+  </g>
+  
+  <!-- Decorative elements -->
+  <g opacity="0.1">
+    <!-- Floating particles -->
+    <circle cx="100" cy="50" r="2" fill="url(#goldGradient)"/>
+    <circle cx="300" cy="80" r="1.5" fill="url(#goldGradient)"/>
+    <circle cx="450" cy="60" r="2.5" fill="url(#goldGradient)"/>
+    <circle cx="600" cy="90" r="1" fill="url(#goldGradient)"/>
+    <circle cx="150" cy="400" r="1.5" fill="url(#goldGradient)"/>
+    <circle cx="400" cy="450" r="2" fill="url(#goldGradient)"/>
+    <circle cx="650" cy="420" r="1" fill="url(#goldGradient)"/>
+  </g>
+</svg> 
