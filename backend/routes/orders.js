@@ -35,7 +35,7 @@ router.post('/place', authenticateToken, [
             `SELECT ci.quantity, p.id as product_id, p.name, p.price, p.stock_quantity
              FROM cart_items ci
              JOIN products p ON ci.product_id = p.id
-             WHERE ci.user_id = ? AND p.is_active = TRUE`,
+             WHERE ci.user_id = ? AND p.is_active = TRUE AND ci.deleted_at IS NULL`,
             [userId]
         );
 
@@ -93,9 +93,9 @@ router.post('/place', authenticateToken, [
                 );
             }
 
-            // Clear user's cart
+            // Soft delete user's cart items
             await connection.execute(
-                'DELETE FROM cart_items WHERE user_id = ?',
+                'UPDATE cart_items SET deleted_at = NOW() WHERE user_id = ? AND deleted_at IS NULL',
                 [userId]
             );
 
@@ -149,7 +149,7 @@ router.get('/my-orders', authenticateToken, async (req, res) => {
             `SELECT o.id, o.order_number, o.total_amount, o.status, o.payment_status, o.created_at,
                     o.shipping_address, o.shipping_city, o.shipping_state, o.shipping_postal_code
              FROM orders o
-             WHERE o.user_id = ?
+             WHERE o.user_id = ? AND o.deleted_at IS NULL
              ORDER BY o.created_at DESC`,
             [userId]
         );
@@ -190,7 +190,7 @@ router.get('/:orderId', authenticateToken, async (req, res) => {
             `SELECT o.*, u.first_name, u.last_name, u.email
              FROM orders o
              JOIN users u ON o.user_id = u.id
-             WHERE o.id = ? AND (o.user_id = ? OR ? = TRUE)`,
+             WHERE o.id = ? AND o.deleted_at IS NULL AND (o.user_id = ? OR ? = TRUE)`,
             [orderId, userId, req.user.is_admin]
         );
 
@@ -208,7 +208,7 @@ router.get('/:orderId', authenticateToken, async (req, res) => {
             `SELECT oi.*, p.image_url, p.fragrance_notes, p.bottle_size
              FROM order_items oi
              LEFT JOIN products p ON oi.product_id = p.id
-             WHERE oi.order_id = ?`,
+             WHERE oi.order_id = ? AND oi.deleted_at IS NULL`,
             [orderId]
         );
 

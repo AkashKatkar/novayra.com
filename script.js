@@ -493,8 +493,6 @@ async function handleRegister(e) {
 }
 
 function logout() {
-    console.log('logout function called'); // Debug log
-    
     // Clear user data
     currentUser = null;
     cartItems = [];
@@ -715,7 +713,7 @@ function updateCartDisplay() {
     // Update progress bar based on cart value
     updateCartProgress(total);
     
-    // Debug: Check if buttons are properly generated
+    
 
 }
 

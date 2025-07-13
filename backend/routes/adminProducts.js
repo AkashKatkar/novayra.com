@@ -89,16 +89,17 @@ router.get('/', adminAuth, async (req, res) => {
 
         const whereClause = whereConditions.length > 0 ? 'WHERE ' + whereConditions.join(' AND ') : '';
 
-        // Get total count
+        // Get total count (excluding soft deleted)
         const [countResult] = await pool.execute(`
             SELECT COUNT(*) as total
             FROM products
-            ${whereClause}
+            WHERE deleted_at IS NULL
+            ${whereConditions.length > 0 ? 'AND ' + whereConditions.join(' AND ') : ''}
         `, params);
 
         const totalProducts = countResult[0].total;
 
-        // Get products
+        // Get products (excluding soft deleted)
         const [products] = await pool.execute(`
             SELECT 
                 id,
@@ -111,10 +112,12 @@ router.get('/', adminAuth, async (req, res) => {
                 fragrance_notes,
                 bottle_size,
                 is_active,
+                deleted_at,
                 created_at,
                 updated_at
             FROM products
-            ${whereClause}
+            WHERE deleted_at IS NULL
+            ${whereConditions.length > 0 ? 'AND ' + whereConditions.join(' AND ') : ''}
             ORDER BY created_at DESC
             LIMIT ? OFFSET ?
         `, [...params, limit, offset]);
@@ -148,6 +151,78 @@ router.get('/', adminAuth, async (req, res) => {
     }
 });
 
+// Get deleted products
+router.get('/deleted', adminAuth, async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = (page - 1) * limit;
+        
+        const search = req.query.search || '';
+
+        // Build WHERE clause for search
+        let whereConditions = ['deleted_at IS NOT NULL'];
+        let params = [];
+
+        if (search) {
+            whereConditions.push(`(name LIKE ? OR description LIKE ? OR fragrance_notes LIKE ?)`);
+            const searchParam = `%${search}%`;
+            params.push(searchParam, searchParam, searchParam);
+        }
+
+        const whereClause = 'WHERE ' + whereConditions.join(' AND ');
+
+        // Get total count of deleted products
+        const [countResult] = await pool.execute(`
+            SELECT COUNT(*) as total
+            FROM products
+            ${whereClause}
+        `, params);
+
+        const totalProducts = countResult[0].total;
+
+        // Get deleted products
+        const [products] = await pool.execute(`
+            SELECT 
+                id,
+                name,
+                description,
+                price,
+                stock_quantity,
+                image_url,
+                category,
+                fragrance_notes,
+                bottle_size,
+                is_active,
+                deleted_at,
+                created_at,
+                updated_at
+            FROM products
+            ${whereClause}
+            ORDER BY deleted_at DESC
+            LIMIT ? OFFSET ?
+        `, [...params, limit, offset]);
+
+        res.json({
+            success: true,
+            products,
+            pagination: {
+                page,
+                limit,
+                total: totalProducts,
+                pages: Math.ceil(totalProducts / limit)
+            }
+        });
+
+    } catch (error) {
+        console.error('Get deleted products error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to get deleted products'
+        });
+    }
+});
+
 // Get single product by ID
 router.get('/:id', adminAuth, async (req, res) => {
     try {
@@ -156,7 +231,7 @@ router.get('/:id', adminAuth, async (req, res) => {
         const [products] = await pool.execute(`
             SELECT *
             FROM products
-            WHERE id = ?
+            WHERE id = ? AND deleted_at IS NULL
         `, [productId]);
 
         if (products.length === 0) {
@@ -172,7 +247,7 @@ router.get('/:id', adminAuth, async (req, res) => {
         const [images] = await pool.execute(`
             SELECT *
             FROM product_images
-            WHERE product_id = ?
+            WHERE product_id = ? AND deleted_at IS NULL
             ORDER BY is_primary DESC, created_at ASC
         `, [productId]);
 
@@ -395,14 +470,14 @@ router.put('/:id', adminAuth, upload.single('image'), async (req, res) => {
     }
 });
 
-// Delete product
+// Soft delete product
 router.delete('/:id', adminAuth, async (req, res) => {
     try {
         const productId = parseInt(req.params.id);
 
-        // Check if product exists and get image URL
+        // Check if product exists
         const [products] = await pool.execute(
-            'SELECT image_url FROM products WHERE id = ?',
+            'SELECT name, image_url FROM products WHERE id = ? AND deleted_at IS NULL',
             [productId]
         );
 
@@ -417,7 +492,7 @@ router.delete('/:id', adminAuth, async (req, res) => {
 
         // Check if product is in any orders
         const [orderItems] = await pool.execute(
-            'SELECT COUNT(*) as count FROM order_items WHERE product_id = ?',
+            'SELECT COUNT(*) as count FROM order_items WHERE product_id = ? AND deleted_at IS NULL',
             [productId]
         );
 
@@ -428,26 +503,16 @@ router.delete('/:id', adminAuth, async (req, res) => {
             });
         }
 
-        // Delete product images from database
-        await pool.execute('DELETE FROM product_images WHERE product_id = ?', [productId]);
-
-        // Delete product
-        await pool.execute('DELETE FROM products WHERE id = ?', [productId]);
-
-        // Delete image file if exists
-        if (product.image_url) {
-            try {
-                const imagePath = path.join(__dirname, '..', '..', product.image_url);
-                await fs.unlink(imagePath);
-            } catch (error) {
-                console.error('Failed to delete image file:', error);
-            }
-        }
+        // Soft delete product
+        await pool.execute(
+            'UPDATE products SET deleted_at = NOW(), is_active = FALSE WHERE id = ?',
+            [productId]
+        );
 
         // Log activity
         await logAdminActivity(
             req.admin.id,
-            'DELETE_PRODUCT',
+            'SOFT_DELETE_PRODUCT',
             'products',
             productId,
             { productName: product.name },
@@ -467,6 +532,56 @@ router.delete('/:id', adminAuth, async (req, res) => {
         });
     }
 });
+
+// Restore soft deleted product
+router.patch('/:id/restore', adminAuth, async (req, res) => {
+    try {
+        const productId = parseInt(req.params.id);
+
+        // Check if product exists and is soft deleted
+        const [products] = await pool.execute(
+            'SELECT name FROM products WHERE id = ? AND deleted_at IS NOT NULL',
+            [productId]
+        );
+
+        if (products.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found or not deleted'
+            });
+        }
+
+        // Restore product
+        await pool.execute(
+            'UPDATE products SET deleted_at = NULL, is_active = TRUE WHERE id = ?',
+            [productId]
+        );
+
+        // Log activity
+        await logAdminActivity(
+            req.admin.id,
+            'RESTORE_PRODUCT',
+            'products',
+            productId,
+            { productName: products[0].name },
+            req
+        );
+
+        res.json({
+            success: true,
+            message: 'Product restored successfully'
+        });
+
+    } catch (error) {
+        console.error('Restore product error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to restore product'
+        });
+    }
+});
+
+
 
 // Upload additional product images
 router.post('/:id/images', adminAuth, upload.array('images', 5), async (req, res) => {
@@ -554,6 +669,7 @@ router.get('/stats/summary', adminAuth, async (req, res) => {
                 AVG(price) as avg_price,
                 SUM(stock_quantity) as total_stock
             FROM products
+            WHERE deleted_at IS NULL
         `);
 
         // Get category distribution
@@ -563,7 +679,7 @@ router.get('/stats/summary', adminAuth, async (req, res) => {
                 COUNT(*) as count,
                 AVG(price) as avg_price
             FROM products
-            WHERE category IS NOT NULL AND category != ''
+            WHERE category IS NOT NULL AND category != '' AND deleted_at IS NULL
             GROUP BY category
             ORDER BY count DESC
         `);

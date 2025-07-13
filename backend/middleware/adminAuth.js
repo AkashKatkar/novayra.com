@@ -19,7 +19,7 @@ const adminAuth = async (req, res, next) => {
         const [sessions] = await pool.execute(
             `SELECT admin_id, expires_at 
              FROM admin_sessions 
-             WHERE session_token = ? AND expires_at > NOW()`,
+             WHERE session_token = ? AND expires_at > NOW() AND deleted_at IS NULL`,
             [token]
         );
 
@@ -36,7 +36,7 @@ const adminAuth = async (req, res, next) => {
         const [admins] = await pool.execute(
             `SELECT id, email, first_name, last_name, is_admin 
              FROM users 
-             WHERE id = ? AND is_admin = TRUE`,
+             WHERE id = ? AND is_admin = TRUE AND deleted_at IS NULL`,
             [session.admin_id]
         );
 
@@ -68,7 +68,7 @@ const adminLogin = async (email, password) => {
         const [users] = await pool.execute(
             `SELECT id, email, password_hash, first_name, last_name, is_admin 
              FROM users 
-             WHERE email = ? AND is_admin = TRUE`,
+             WHERE email = ? AND is_admin = TRUE AND deleted_at IS NULL`,
             [email]
         );
 
@@ -125,7 +125,7 @@ const adminLogin = async (email, password) => {
 const adminLogout = async (token) => {
     try {
         await pool.execute(
-            'DELETE FROM admin_sessions WHERE session_token = ?',
+            'UPDATE admin_sessions SET deleted_at = NOW() WHERE session_token = ?',
             [token]
         );
         return { success: true };

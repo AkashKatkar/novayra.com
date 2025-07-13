@@ -21,6 +21,7 @@ const profileRoutes = require('./routes/profile');
 const adminRoutes = require('./routes/admin');
 const adminOrderRoutes = require('./routes/adminOrders');
 const adminProductRoutes = require('./routes/adminProducts');
+const settingsRoutes = require('./routes/settings');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -96,6 +97,7 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/orders', adminOrderRoutes);
 app.use('/api/admin/products', adminProductRoutes);
+app.use('/api/admin/settings', settingsRoutes);
 
 // Serve index.html for all non-API routes (SPA support)
 app.get('*', (req, res) => {

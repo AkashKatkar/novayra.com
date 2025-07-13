@@ -53,7 +53,7 @@ router.get('/', adminAuth, async (req, res) => {
             SELECT COUNT(*) as total
             FROM orders o
             JOIN users u ON o.user_id = u.id
-            ${whereClause}
+            WHERE o.deleted_at IS NULL ${whereClause ? 'AND ' + whereClause.substring(6) : ''}
         `, params);
 
         const totalOrders = countResult[0].total;
@@ -83,7 +83,7 @@ router.get('/', adminAuth, async (req, res) => {
                 u.phone
             FROM orders o
             JOIN users u ON o.user_id = u.id
-            ${whereClause}
+            WHERE o.deleted_at IS NULL ${whereClause ? 'AND ' + whereClause.substring(6) : ''}
             ORDER BY o.created_at DESC
             LIMIT ? OFFSET ?
         `, [...params, limit, offset]);
@@ -101,7 +101,7 @@ router.get('/', adminAuth, async (req, res) => {
                     p.image_url
                 FROM order_items oi
                 LEFT JOIN products p ON oi.product_id = p.id
-                WHERE oi.order_id = ?
+                WHERE oi.order_id = ? AND oi.deleted_at IS NULL
             `, [order.id]);
             
             order.items = items;
@@ -141,7 +141,7 @@ router.get('/:id', adminAuth, async (req, res) => {
                 u.phone
             FROM orders o
             JOIN users u ON o.user_id = u.id
-            WHERE o.id = ?
+            WHERE o.id = ? AND o.deleted_at IS NULL
         `, [orderId]);
 
         if (orders.length === 0) {
@@ -154,7 +154,6 @@ router.get('/:id', adminAuth, async (req, res) => {
         const order = orders[0];
 
         // Get order items
-        console.log('DEBUG: Fetching items for order ID:', orderId);
         const [items] = await pool.execute(`
             SELECT 
                 oi.*,
@@ -162,13 +161,10 @@ router.get('/:id', adminAuth, async (req, res) => {
                 p.category
             FROM order_items oi
             LEFT JOIN products p ON oi.product_id = p.id
-            WHERE oi.order_id = ?
+            WHERE oi.order_id = ? AND oi.deleted_at IS NULL
         `, [orderId]);
 
-        console.log('DEBUG: Items found:', items.length, items);
         order.items = items;
-
-        console.log('DEBUG: Final order object:', JSON.stringify(order, null, 2));
 
         res.json({
             success: true,

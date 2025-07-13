@@ -15,7 +15,7 @@ router.get('/', authenticateToken, async (req, res) => {
                     p.id as product_id, p.name, p.description, p.price, p.image_url, p.stock_quantity, p.fragrance_notes, p.bottle_size
              FROM cart_items ci
              JOIN products p ON ci.product_id = p.id
-             WHERE ci.user_id = ? AND p.is_active = TRUE
+             WHERE ci.user_id = ? AND p.is_active = TRUE AND ci.deleted_at IS NULL
              ORDER BY ci.created_at DESC`,
             [userId]
         );
@@ -93,7 +93,7 @@ router.post('/add', authenticateToken, [
 
         // Check if item already exists in cart
         const [existingItems] = await pool.execute(
-            'SELECT id, quantity FROM cart_items WHERE user_id = ? AND product_id = ?',
+            'SELECT id, quantity FROM cart_items WHERE user_id = ? AND product_id = ? AND deleted_at IS NULL',
             [userId, product_id]
         );
 
@@ -165,7 +165,7 @@ router.put('/update/:itemId', authenticateToken, [
             `SELECT ci.id, ci.quantity, p.stock_quantity, p.name
              FROM cart_items ci
              JOIN products p ON ci.product_id = p.id
-             WHERE ci.id = ? AND ci.user_id = ? AND p.is_active = TRUE`,
+             WHERE ci.id = ? AND ci.user_id = ? AND p.is_active = TRUE AND ci.deleted_at IS NULL`,
             [itemId, userId]
         );
 
@@ -215,7 +215,7 @@ router.delete('/remove/:itemId', authenticateToken, async (req, res) => {
 
         // Check if cart item exists and belongs to user
         const [cartItems] = await pool.execute(
-            'SELECT id FROM cart_items WHERE id = ? AND user_id = ?',
+            'SELECT id FROM cart_items WHERE id = ? AND user_id = ? AND deleted_at IS NULL',
             [itemId, userId]
         );
 
@@ -226,9 +226,9 @@ router.delete('/remove/:itemId', authenticateToken, async (req, res) => {
             });
         }
 
-        // Remove item from cart
+        // Soft delete item from cart
         await pool.execute(
-            'DELETE FROM cart_items WHERE id = ?',
+            'UPDATE cart_items SET deleted_at = NOW() WHERE id = ?',
             [itemId]
         );
 
@@ -252,7 +252,7 @@ router.delete('/clear', authenticateToken, async (req, res) => {
         const userId = req.user.id;
 
         await pool.execute(
-            'DELETE FROM cart_items WHERE user_id = ?',
+            'UPDATE cart_items SET deleted_at = NOW() WHERE user_id = ? AND deleted_at IS NULL',
             [userId]
         );
 
@@ -279,7 +279,7 @@ router.get('/summary', authenticateToken, async (req, res) => {
             `SELECT ci.quantity, p.price
              FROM cart_items ci
              JOIN products p ON ci.product_id = p.id
-             WHERE ci.user_id = ? AND p.is_active = TRUE`,
+             WHERE ci.user_id = ? AND p.is_active = TRUE AND ci.deleted_at IS NULL`,
             [userId]
         );
 
